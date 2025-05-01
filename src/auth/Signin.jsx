@@ -50,19 +50,24 @@ const Signin = () => {
           </div>
 
           {/* Social Logins */}
-          <div className="flex flex-col gap-4">
-            <button className="input-box flex items-center justify-center font-semibold border rounded-md py-2">
-              <FcGoogle className="w-5 h-5 mr-2" />
-              Continue with Google
+          <div className="flex flex-col gap-4 items-center max-w-md">
+            <button className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200">
+              <div className="flex items-center w-full">
+                <FcGoogle className="w-5 h-5 mr-2 flex-shrink-0" />
+                <span className="flex-1 text-center">Continue with Google</span>
+              </div>
             </button>
-            <button className="input-box flex items-center justify-center font-semibold border rounded-md py-2">
-              <RiAppleFill className="w-5 h-5 mr-2" />
-              Continue with Apple
+            <button className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200">
+              <div className="flex items-center w-full">
+                <RiAppleFill className="w-5 h-5 mr-2 flex-shrink-0" />
+                <span className="flex-1 text-center">Continue with Apple</span>
+              </div>
             </button>
-
-            <button className="input-box flex items-center justify-center font-semibold border rounded-md py-2">
-              <RiGithubFill className="w-5 h-5 mr-2" />
-              Continue with Github
+            <button className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200">
+              <div className="flex items-center w-full">
+                <RiGithubFill className="w-5 h-5 mr-2 flex-shrink-0" />
+                <span className="flex-1 text-center">Continue with Github</span>
+              </div>
             </button>
           </div>
 
@@ -82,7 +87,7 @@ const Signin = () => {
               <input
                 id="email"
                 type="text"
-                className="flex items-center w-full text-sm    bg-white border border-gray-300 px-4 py-3 rounded-md outline-none  focus-within:ring-gray-700 focus-within:border-gray-800 transition duration-200"
+                className="flex items-center w-full text-smbg-white border border-gray-300 px-4 py-3 rounded-md outline-none  focus-within:ring-gray-700 focus-within:border-gray-800 transition duration-200 placeholder:text-[12px] placeholder:text-gray-400"
                 placeholder="Enter your email"
                 value={email}
                 onChange={({ target }) => setEmail(target.value)}
