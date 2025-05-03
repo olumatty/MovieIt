@@ -3,54 +3,66 @@ import bgImage from "../assets/photo-1674175830433-79d6d5bf5819.avif";
 import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill, RiGithubFill } from "react-icons/ri";
 import PasswordInput from "../../components/PasswordInput";
+import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 
 const Signin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+
+  const navigate = useNavigate();
+  const location = useLocation(); // Get the current location
 
   const handleLogin = (e) => {
     e.preventDefault();
     // Handle login logic here
+    console.log("Login attempted with:", { username, email, password });
+  };
+
+  const handleLoginSwitch = () => {
+    navigate("/"); // Use /login for the login route as per common practice
+  };
+
+  const handleSignupSwitch = () => {
+    navigate("/signup");
   };
 
   return (
-    <div className="flex flex-row h-screen overflow-hidden">
-      <div className="w-1/2  relative">
+   
+    <div className="flex flex-col md:flex-row h-screen">
+      <div className="hidden md:block md:w-1/2 relative overflow-hidden rounded-lg">
         <img
           src={bgImage}
           alt="Login Background"
-          size={20}
-          className=" rounded-lg "
+          className="w-full h-full object-cover rounded-lg" 
         />
       </div>
 
-      {/* Right side - Form */}
-      <div className="md:w-1/2 w-full flex items-center justify-center p-6 md:p-16">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-16">
         <div className="w-full max-w-md">
-          {/* Tabs */}
-          <div className="flex justify-around mb-6 pb-2">
-            <button
-              className={`text-sm font-medium ${
+          <div className="flex justify-around mb-6 border-b border-gray-200">
+             <button
+              className={`flex-1 text-sm font-medium py-2 text-center transition-colors duration-200 ${
                 location.pathname === "/login"
-                  ? "text-black  border-black"
-                  : "text-gray-400 hover:text-black"
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-500 hover:text-black border-b-2 border-transparent"
               }`}
+              onClick={handleLoginSwitch}
             >
               Log In
             </button>
             <button
-              className={`text-sm font-medium ${
-                location.pathname === "/signUp"
-                  ? "text-black  border-black"
-                  : "text-gray-400 hover:text-black"
+               className={`flex-1 text-sm font-medium py-2 text-center transition-colors duration-200 ${
+                location.pathname === "/signup" 
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-500 hover:text-black border-b-2 border-transparent"
               }`}
+              onClick={handleSignupSwitch}
             >
               Create Account
             </button>
           </div>
-
-          {/* Social Logins */}
-          <div className="flex flex-col gap-4 items-center max-w-md">
+          <div className="flex flex-col gap-4 items-center max-w-md mx-auto">
             <button className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200">
               <div className="flex items-center w-full">
                 <FcGoogle className="w-5 h-5 mr-2 flex-shrink-0" />
@@ -71,23 +83,35 @@ const Signin = () => {
             </button>
           </div>
 
-          {/* Divider */}
           <div className="my-8 flex items-center gap-2">
             <hr className="flex-grow border-gray-300" />
             <span className="text-gray-500 text-sm font-medium">Or</span>
             <hr className="flex-grow border-gray-300" />
           </div>
 
-          {/* Email/Password Form */}
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium">
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                className="mt-1 block w-full border border-gray-300 px-4 py-2 rounded-md outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-200 placeholder:text-sm placeholder:text-gray-400"
+                placeholder="Enter your username"
+                value={username}
+                onChange={({ target }) => setUsername(target.value)}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email Address
               </label>
               <input
                 id="email"
-                type="text"
-                className="flex items-center w-full text-smbg-white border border-gray-300 px-4 py-3 rounded-md outline-none  focus-within:ring-gray-700 focus-within:border-gray-800 transition duration-200 placeholder:text-[12px] placeholder:text-gray-400"
+                type="email"
+                className="mt-1 block w-full border border-gray-300 px-4 py-2 rounded-md outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-200 placeholder:text-sm placeholder:text-gray-400"
                 placeholder="Enter your email"
                 value={email}
                 onChange={({ target }) => setEmail(target.value)}
@@ -95,7 +119,7 @@ const Signin = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <PasswordInput
@@ -106,17 +130,16 @@ const Signin = () => {
               />
             </div>
 
-            {/* Terms */}
-            <p className="text-xs text-center text-gray-500 mt-4">
+            <p className="text-xs sm:text-sm text-center text-gray-500 mt-4">
               By creating an account, you agree with our{" "}
-              <span className="underline">Terms of Service</span> and{" "}
-              <span className="underline">Privacy Policy</span>.
+              <span className="underline text-gray-700 hover:text-black cursor-pointer">Terms of Service</span> and{" "}
+              <span className="underline text-gray-700 hover:text-black cursor-pointer">Privacy Policy</span>.
             </p>
 
             {/* Submit */}
             <button
               type="submit"
-              className="btn-primary w-full py-2 bg-black text-white font-semibold rounded-md mt-4"
+              className="w-full py-2 bg-black text-white font-semibold rounded-md mt-4 hover:bg-gray-800 transition-colors duration-200"
             >
               Log In
             </button>
