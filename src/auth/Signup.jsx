@@ -100,7 +100,7 @@ const Signup = () => {
               <input
                 id="username"
                 type="text"
-                className="mt-1 block w-full border border-gray-300 px-4 py-2 rounded-md outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-200 placeholder:text-sm placeholder:text-gray-400"
+                className="mt-1 block w-full border border-gray-300 px-4 py-2 rounded-md outline-none focus-within:ring-gray-700 focus-within:border-gray-800 transitiontransition duration-200 placeholder:text-[12px] placeholder:text-gray-400"
                 placeholder="Enter your username"
                 value={username}
                 onChange={({ target }) => setUsername(target.value)}
@@ -114,7 +114,7 @@ const Signup = () => {
               <input
                 id="email"
                 type="email"
-                className="mt-1 block w-full border border-gray-300 px-4 py-2 rounded-md outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-200 placeholder:text-sm placeholder:text-gray-400"
+                className="mt-1 block w-full border border-gray-300 px-4 py-2 rounded-md outline-nonefocus-within:ring-gray-700 focus-within:border-gray-800 transition duration-200 placeholder:text-[12px] placeholder:text-gray-400"
                 placeholder="Enter your email"
                 value={email}
                 onChange={({ target }) => setEmail(target.value)}

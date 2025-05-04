@@ -14,7 +14,7 @@ const PasswordInput = ({ value, onChange, placeholder }) => {
     >
       <input
         type={showPassword ? "text" : "password"}
-        className="w-full text-sm bg-transparent placeholder:text-[12px] placeholder:text-gray-400 text-gray-900 border-none outline-none mr-18"
+        className="w-full bg-transparent placeholder:text-[12px] placeholder:text-gray-400 text-gray-900 border-none outline-none mr-18"
         value={value}
         onChange={onChange}
         placeholder={placeholder || "Password"}
