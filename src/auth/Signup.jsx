@@ -3,47 +3,50 @@ import bgImage from "../assets/photo-1674175830433-79d6d5bf5819.avif";
 import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill, RiGithubFill } from "react-icons/ri";
 import PasswordInput from "../../components/PasswordInput";
-import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
+import { useNavigate, useLocation } from "react-router-dom";
 
-const Signin = () => {
+const Signup = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current location
+  const location = useLocation();
 
-  const handleLogin = (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempted with:", { username, email, password });
+    // Handle signup logic here
+    console.log("Signup attempted with:", { username, email, password });
   };
 
   const handleLoginSwitch = () => {
-    navigate("/"); // Use /login for the login route as per common practice
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
   };
 
   const handleSignupSwitch = () => {
-    navigate("/signup");
+    if (location.pathname !== "/signup") {
+      navigate("/signup");
+    }
   };
 
   return (
-   
     <div className="flex flex-col md:flex-row h-screen">
       <div className="hidden md:block md:w-1/2 relative overflow-hidden rounded-lg">
         <img
           src={bgImage}
-          alt="Login Background"
-          className="w-full h-full object-cover rounded-lg" 
+          alt="Signup Background"
+          className="w-full h-full object-cover rounded-lg"
         />
       </div>
 
       <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-16">
         <div className="w-full max-w-md">
           <div className="flex justify-around mb-6 border-b border-gray-200">
-             <button
-              className={`flex-1 text-sm font-medium py-2 text-center transition-colors duration-200 ${
-                location.pathname === "/login"
+            <button
+              className={`flex-1 text-sm font-medium py-2 cursor-pointer text-center transition-colors duration-200 ${
+                location.pathname === "/"
                   ? "text-black border-b-2 border-black"
                   : "text-gray-500 hover:text-black border-b-2 border-transparent"
               }`}
@@ -52,8 +55,8 @@ const Signin = () => {
               Log In
             </button>
             <button
-               className={`flex-1 text-sm font-medium py-2 text-center transition-colors duration-200 ${
-                location.pathname === "/signup" 
+              className={`flex-1 text-sm font-medium py-2 text-center transition-colors duration-200 ${
+                location.pathname === "/signup"
                   ? "text-black border-b-2 border-black"
                   : "text-gray-500 hover:text-black border-b-2 border-transparent"
               }`}
@@ -89,7 +92,7 @@ const Signin = () => {
             <hr className="flex-grow border-gray-300" />
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleSignup} className="space-y-4">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                 Username
@@ -136,12 +139,11 @@ const Signin = () => {
               <span className="underline text-gray-700 hover:text-black cursor-pointer">Privacy Policy</span>.
             </p>
 
-            {/* Submit */}
             <button
               type="submit"
               className="w-full py-2 bg-black text-white font-semibold rounded-md mt-4 hover:bg-gray-800 transition-colors duration-200"
             >
-              Log In
+              Sign Up
             </button>
           </form>
         </div>
@@ -150,4 +152,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Signup;

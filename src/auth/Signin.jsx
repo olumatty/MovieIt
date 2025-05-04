@@ -3,46 +3,49 @@ import bgImage from "../assets/photo-1674175830433-79d6d5bf5819.avif";
 import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill, RiGithubFill } from "react-icons/ri";
 import PasswordInput from "../../components/PasswordInput";
-import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Signin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current location
+  const location = useLocation();
 
   const handleLogin = (e) => {
     e.preventDefault();
     // Handle login logic here
-    console.log("Login attempted with:", {email, password });
+    console.log("Login attempted with:", { email, password });
   };
 
   const handleLoginSwitch = () => {
-    navigate("/"); // Use /login for the login route as per common practice
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
   };
 
   const handleSignupSwitch = () => {
-    navigate("/signup");
+    if (location.pathname !== "/signup") {
+      navigate("/signup");
+    }
   };
 
   return (
-   
     <div className="flex flex-col md:flex-row h-screen">
       <div className="hidden md:block md:w-1/2 relative overflow-hidden rounded-lg">
         <img
           src={bgImage}
           alt="Login Background"
-          className="w-full h-full object-cover rounded-lg" 
+          className="w-full h-full object-cover rounded-lg"
         />
       </div>
 
       <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-16">
         <div className="w-full max-w-md">
           <div className="flex justify-around mb-6 border-b border-gray-200">
-             <button
-              className={`flex-1 text-sm font-medium py-2 text-center transition-colors duration-200 ${
-                location.pathname === "/login"
+            <button
+              className={`flex-1 text-sm font-medium py-2 text-center cursor-pointer transition-colors duration-200 ${
+                location.pathname === "/"
                   ? "text-black border-b-2 border-black"
                   : "text-gray-500 hover:text-black border-b-2 border-transparent"
               }`}
@@ -51,8 +54,8 @@ const Signin = () => {
               Log In
             </button>
             <button
-               className={`flex-1 text-sm font-medium py-2 text-center transition-colors duration-200 ${
-                location.pathname === "/signup" 
+              className={`flex-1 text-sm font-medium py-2 text-center transition-colors duration-200 ${
+                location.pathname === "/signup"
                   ? "text-black border-b-2 border-black"
                   : "text-gray-500 hover:text-black border-b-2 border-transparent"
               }`}
@@ -116,12 +119,11 @@ const Signin = () => {
             </div>
 
             <p className="text-xs sm:text-sm text-center text-gray-500 mt-4">
-              By creating an account, you agree with our{" "}
+              By continuing, you agree with our{" "}
               <span className="underline text-gray-700 hover:text-black cursor-pointer">Terms of Service</span> and{" "}
               <span className="underline text-gray-700 hover:text-black cursor-pointer">Privacy Policy</span>.
             </p>
 
-            {/* Submit */}
             <button
               type="submit"
               className="w-full py-2 bg-black text-white font-semibold rounded-md mt-4 hover:bg-gray-800 transition-colors duration-200"
