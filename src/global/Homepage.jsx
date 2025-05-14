@@ -61,12 +61,12 @@ const Homepage = () => {
       </div>
     </motion.header>
 
-    <div className='flex relative items-center px-3 py-3 justify-center mt-8'>
+    <div className='flex relative items-center px-3 py-3 justify-center'>
       <motion.img 
         src={bgImage} 
         alt='Background' 
         loading="lazy" 
-        className='w-full h-screen object-cover relative inset-0'
+        className='w-full h-screen object-cover relative inset-0 z-0'
         initial={{ scale: 1.2 }}
         animate={{ scale: 1 }}
         transition={{ duration: 5, ease: "easeOut" }}
@@ -77,7 +77,7 @@ const Homepage = () => {
         animate={{ opacity: 0.6 }}
         transition={{ duration: 1.2 }}
       >
-        <div className='max-w-[1440px]flex mt-60 mx-auto px-4'>
+        <div className='max-w-[1440px] mt-60 mx-auto px-4'>
           <motion.h1 
             className='text-6xl text-white font-bold text-center mb-4'
             initial={{ opacity: 0, y: 30 }}
