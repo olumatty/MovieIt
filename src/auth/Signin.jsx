@@ -5,22 +5,32 @@ import { RiAppleFill, RiGithubFill } from "react-icons/ri";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthService from "../../services/AuthService";
+import { motion } from "framer-motion";
 
 const Signin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleLogin = async(e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+    setMessage('');
+    // Handle login logic here
     try{
       await AuthService.login(email, password);
       navigate("/");
     } catch (error) {
       console.error('Error during login:', error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,7 +57,10 @@ const Signin = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="hidden md:block md:w-1/2 relative overflow-hidden ">
-        <img
+        <motion.img
+          initial={{ scale: 1.2 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 5, ease: "easeOut" }}
           src={bgImage}
           alt="Login Background"
           className="w-full h-full object-cover"
@@ -105,6 +118,9 @@ const Signin = () => {
             <hr className="flex-grow border-gray-300" />
           </div>
 
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {message && <p className="text-green-500 text-sm text-center">{message}</p>}
+
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -141,8 +157,9 @@ const Signin = () => {
             <button
               type="submit"
               className="w-full py-2 bg-black text-white font-semibold rounded-md mt-4 hover:bg-gray-800 transition-colors duration-200"
+              disabled={loading}
             >
-              Log In
+              {loading ? "Logging In..." : "Log In"}
             </button>
           </form>
         </div>

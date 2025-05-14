@@ -1,22 +1,47 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import bgImage from "../assets/Movie Poster.avif";
 import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill, RiGithubFill } from "react-icons/ri";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
+import AuthService from '../../services/AuthService';
+import { motion } from "framer-motion";
 
 const Signup = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleSignup = (e) => {
+  const handleSignup = async(e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+    setMessage('');
     // Handle signup logic here
-    console.log("Signup attempted with:", { username, email, password });
+    try{
+      await AuthService.signup(username, email, password);
+      navigate("/login");
+    } catch(error){
+      console.error('Error during signup:', error);
+      throw error;  
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignup = () => {
+    AuthService.signupWithGoogle();
+  };
+
+  const handleGithubSignup = () => {
+    AuthService.signupWithGithub();
   };
 
   const handleLoginSwitch = () => {
@@ -34,10 +59,13 @@ const Signup = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="hidden md:block md:w-1/2 relative overflow-hidden">
-        <img
+        <motion.img
+          initial={{ scale: 1.2 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 5, ease: "easeOut" }}
           src={bgImage}
           alt="Signup Background"
-          className="w-full h-full object-cover "
+          className="w-full h-full object-cover"
         />
       </div>
 
@@ -66,14 +94,20 @@ const Signup = () => {
             </button>
           </div>
           <div className="flex flex-col gap-4 items-center max-w-md mx-auto">
-            <button className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200">
+            <button 
+              className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200"
+              onClick={handleGoogleSignup}
+            >
               <div className="flex items-center w-full">
                 <FcGoogle className="w-5 h-5 mr-2 flex-shrink-0" />
                 <span className="flex-1 text-center">Continue with Google</span>
               </div>
             </button>
             
-            <button className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200">
+            <button 
+              className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200"
+              onClick={handleGithubSignup}
+            >
               <div className="flex items-center w-full">
                 <RiGithubFill className="w-5 h-5 mr-2 flex-shrink-0" />
                 <span className="flex-1 text-center">Continue with Github</span>
@@ -86,6 +120,9 @@ const Signup = () => {
             <span className="text-gray-500 text-sm font-medium">Or</span>
             <hr className="flex-grow border-gray-300" />
           </div>
+
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {message && <p className="text-green-500 text-sm text-center">{message}</p>}
 
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
@@ -136,10 +173,21 @@ const Signup = () => {
 
             <button
               type="submit"
-              className="w-full py-2 bg-black text-white font-semibold rounded-md mt-4 hover:bg-gray-800 transition-colors duration-200"
+              className="w-full py-2 bg-black cursor-pointer text-white font-semibold rounded-md mt-4 hover:bg-gray-800 transition-colors duration-200"
+              disabled={loading}
             >
-              Sign Up
+              {loading ? "Registering..." : "Sign Up"}
             </button>
+
+            <p className="text-xs sm:text-sm text-center text-gray-500 mt-4">
+              Already have an account?{" "}
+              <span
+                className="underline text-gray-700 hover:text-black cursor-pointer"
+                onClick={handleLoginSwitch}
+              >
+                Log In
+              </span>
+            </p>
           </form>
         </div>
       </div>
