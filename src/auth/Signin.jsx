@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import bgImage from "../assets/photo-1674175830433-79d6d5bf5819.avif";
+import bgImage from "../assets/Movie Poster.avif";
 import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill, RiGithubFill } from "react-icons/ri";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
+import AuthService from "../../services/AuthService";
 
 const Signin = () => {
   const [password, setPassword] = useState("");
@@ -12,14 +13,28 @@ const Signin = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogin = (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
-    console.log("Login attempted with:", { email, password });
+    try{
+      await AuthService.login(email, password);
+      navigate("/");
+    } catch (error) {
+      console.error('Error during login:', error);
+      throw error;
+    }
   };
 
+  const handleGoogleLogin = () => {
+    AuthService.loginWithGoogle();
+  }
+
+  const handleGithubLogin = () => {
+    AuthService.loginWithGithub();
+  }
+
   const handleLoginSwitch = () => {
-    if (location.pathname !== "/") {
-      navigate("/");
+    if (location.pathname !== "/login") {
+      navigate("/login");
     }
   };
 
@@ -31,11 +46,11 @@ const Signin = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      <div className="hidden md:block md:w-1/2 relative overflow-hidden rounded-lg">
+      <div className="hidden md:block md:w-1/2 relative overflow-hidden ">
         <img
           src={bgImage}
           alt="Login Background"
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-cover"
         />
       </div>
 
@@ -44,7 +59,7 @@ const Signin = () => {
           <div className="flex justify-around mb-6 border-b border-gray-200">
             <button
               className={`flex-1 text-sm font-medium py-2 text-center cursor-pointer transition-colors duration-200 ${
-                location.pathname === "/"
+                location.pathname === "/login"
                   ? "text-black border-b-2 border-black"
                   : "text-gray-500 hover:text-black border-b-2 border-transparent"
               }`}
@@ -64,19 +79,19 @@ const Signin = () => {
             </button>
           </div>
           <div className="flex flex-col gap-4 items-center max-w-md mx-auto">
-            <button className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200">
+            <button
+              className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200"
+              onClick={handleGoogleLogin}>
               <div className="flex items-center w-full">
                 <FcGoogle className="w-5 h-5 mr-2 flex-shrink-0" />
                 <span className="flex-1 text-center">Continue with Google</span>
               </div>
             </button>
-            <button className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200">
-              <div className="flex items-center w-full">
-                <RiAppleFill className="w-5 h-5 mr-2 flex-shrink-0" />
-                <span className="flex-1 text-center">Continue with Apple</span>
-              </div>
-            </button>
-            <button className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200">
+
+            <button 
+              className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200"
+              onClick={handleGithubLogin}
+            >
               <div className="flex items-center w-full">
                 <RiGithubFill className="w-5 h-5 mr-2 flex-shrink-0" />
                 <span className="flex-1 text-center">Continue with Github</span>
