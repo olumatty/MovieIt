@@ -79,7 +79,7 @@ const Homepage = () => {
       >
         <div className='max-w-[1440px] mt-60 mx-auto px-4'>
           <motion.h1 
-            className='text-6xl text-white font-bold text-center mb-4'
+            className='text-4xl md:text-6xl text-white font-bold text-center mb-4'
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -87,12 +87,15 @@ const Homepage = () => {
             Welcome to MoveIt
           </motion.h1>
           <motion.p 
-            className='text-lg text-white text-center mb-8 font-semibold'
+            className='text-md md:text-lg text-white text-center mb-8 font-semibold'
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            Get caught up in your world of fiction
+            Dive into the stories you love.
+            <br/>
+            Uncover your next favorite movie, track what you’ve seen<br/>
+            and explore a universe of fiction tailored just for you.
           </motion.p>
         </div>
       </motion.div>

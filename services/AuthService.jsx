@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/auth/';
+const API_URL = 'http://localhost:8000/api/auth/';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -53,7 +53,7 @@ const AuthService = {
             
             if (response.data.accessToken) {
                 localStorage.setItem('token', response.data.accessToken);
-                localStorage.setItem('user', JSON.stringify(response.data) || {email: email});
+                localStorage.setItem('user', JSON.stringify(response.data));
             }
             return response.data;
         } catch (error) {

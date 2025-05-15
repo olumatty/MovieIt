@@ -1,11 +1,13 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import bgImage from "../assets/Movie Poster.avif";
 import { FcGoogle } from "react-icons/fc";
-import { RiAppleFill, RiGithubFill } from "react-icons/ri";
+import {RiGithubFill } from "react-icons/ri";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 import { motion } from "framer-motion";
+
 
 const Signin = () => {
   const [password, setPassword] = useState("");
@@ -25,7 +27,7 @@ const Signin = () => {
     // Handle login logic here
     try{
       await AuthService.login(email, password);
-      navigate("/");
+      navigate("/movie");
     } catch (error) {
       console.error('Error during login:', error);
       throw error;

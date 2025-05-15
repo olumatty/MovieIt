@@ -36,7 +36,8 @@ const App = () => {
       <Route path="/" element={<Homepage/>}/>
       <Route path="/login" element={user ? <Navigate to ="/movie"/> : <Signin />} />
       <Route path="/signup" element={user ? <Navigate to ="/movie"/> : <Signup />} />
-      <Route path= "/movie" element={<ProtectedRoutes><Movie /></ProtectedRoutes>} />
+      <Route path= "/movie" element={<Movie/>} />
+     
 
       <Route path = "*" element={<PageNotFound/>} />
       

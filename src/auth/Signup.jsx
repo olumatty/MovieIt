@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import bgImage from "../assets/Movie Poster.avif";
 import { FcGoogle } from "react-icons/fc";
-import { RiAppleFill, RiGithubFill } from "react-icons/ri";
+import { RiGithubFill } from "react-icons/ri";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthService from '../../services/AuthService';
@@ -26,8 +26,8 @@ const Signup = () => {
     setMessage('');
     // Handle signup logic here
     try{
-      await AuthService.signup(username, email, password);
-      navigate("/login");
+      await AuthService.register(username, email, password);
+      navigate("/movie");
     } catch(error){
       console.error('Error during signup:', error);
       throw error;  
@@ -37,11 +37,11 @@ const Signup = () => {
   };
 
   const handleGoogleSignup = () => {
-    AuthService.signupWithGoogle();
+    AuthService.loginWithGoogle();
   };
 
   const handleGithubSignup = () => {
-    AuthService.signupWithGithub();
+    AuthService.loginWithGithub();
   };
 
   const handleLoginSwitch = () => {
