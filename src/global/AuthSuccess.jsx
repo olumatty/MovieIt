@@ -6,7 +6,7 @@ const AuthSuccess = () => {
     const navigate = useNavigate();
 
     useEffect(() =>{
-        const success = AuthSuccess.handleAuthCallback();
+        const success = AuthService.handleAuthCallback();
 
         if (success) {
             navigate("/movie");

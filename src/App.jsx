@@ -7,6 +7,8 @@ import Homepage from "./global/Homepage";
 import AuthService from "../services/AuthService";
 import Movie from "./global/Movie";
 import PageNotFound from "./global/PageNotFound";
+import AuthSuccess from "./global/AuthSuccess";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoutes = ({children})=>  {
   const isAuthenticated = AuthService.isAuthenticated();
@@ -37,6 +39,7 @@ const App = () => {
       <Route path="/login" element={user ? <Navigate to ="/movie"/> : <Signin />} />
       <Route path="/signup" element={user ? <Navigate to ="/movie"/> : <Signup />} />
       <Route path= "/movie" element={<Movie/>} />
+      <Route path= "/auth-success" element={<AuthSuccess/>}/>
      
 
       <Route path = "*" element={<PageNotFound/>} />
