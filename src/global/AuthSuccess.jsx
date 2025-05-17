@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import AuthService from '../../services/AuthService';
 
 const AuthSuccess = () => {
+  console.log('--- Rendering AuthSuccess component ---')
     const navigate = useNavigate();
 
     useEffect(() =>{
+      console.log('--- Running AuthSuccess useEffect ---');
         const success = AuthService.handleAuthCallback();
 
         if (success) {

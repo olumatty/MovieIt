@@ -22,7 +22,7 @@ api.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 const AuthService = {
     register: async (username, email, password) => {
         try{
@@ -64,8 +64,9 @@ const AuthService = {
 
     logout: () => {
         try {
-            api.get(`${API_URL}/logout`)
+            axios.get(`${API_URL}/logout`);
             localStorage.removeItem('token');
+            localStorage.removeItem('user');
         } catch (error) {
             console.error('Error during logout:', error);
             throw error;
@@ -96,34 +97,47 @@ const AuthService = {
     loginWithGithub: () => {
         window.location.href = 'http://localhost:8000/api/auth/github';
     },
-
     handleAuthCallback: () => {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
-        const user = urlParams.get('user');
+        const userParam = urlParams.get('user'); // Renamed to avoid conflict if you parse user from token
+
+        let success = false; // Variable to indicate if handling was successful
 
         if (token) {
             localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
-        }
+            // You might want to save the raw userParam here initially if you need it later,
+            // or rely solely on the token payload for user info.
+             localStorage.setItem('user', JSON.stringify(userParam)); 
 
-        try{
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const payload = JSON.parse(window.atob(base64));
+            try{
+                // Now, attempt to parse the token ONLY if it exists
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const payload = JSON.parse(window.atob(base64));
 
-            if(payload){
-                localStorage.setItem('user',JSON.stringify({
-                    id: payload.id,
-                    email: payload.email,
-                    username: payload.username,
-                }))
+                if(payload){
+                    localStorage.setItem('user',JSON.stringify({
+                        id: payload.id,
+                        email: payload.email,
+                    }));
+                    success = true;
+                }
+            } catch(error){
+                console.error('Error during token handling:', error);
+                // If token handling fails, you might want to clear potentially bad data
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                // Don't re-throw here if you want the calling code to handle the failure gracefully
             }
-        } catch(error){
-            console.error('Error during token handling:', error);
-            throw error;
+        } else {
+            console.warn('No token found in URL parameters.');
+             // If no token is found, handling was not successful
+             success = false;
         }
-        
+
+        // Return the success status so the calling component can decide to navigate
+        return success;
     }
 
 };
