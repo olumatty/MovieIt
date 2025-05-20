@@ -4,6 +4,7 @@ import bgImage from "../assets/Movie Poster.avif";
 import { FcGoogle } from "react-icons/fc";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 import { motion } from "framer-motion";
 
@@ -14,6 +15,8 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const {register, googleLogin} = React.useContext(AuthContext);
+
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,9 +27,16 @@ const Signup = () => {
     setError('');
     setMessage('');
     // Handle signup logic here
+    try{
+      await register(username, email, password);
+      setMessage('Registration successful');
+      navigate("/movie");
+    } catch(error){
+      setError('Registration failed');
+    } finally{
+      setLoading(false);
+    }
   }
-
-  
 
   const handleLoginSwitch = () => {
     if (location.pathname !== "/login") {
@@ -37,6 +47,16 @@ const Signup = () => {
   const handleSignupSwitch = () => {
     if (location.pathname !== "/signup") {
       navigate("/signup");
+    }
+  }
+
+  const handleGoogleSignup = () => {
+    try{
+      googleLogin();
+      setMessage('Login successful');
+      navigate("/movie");
+    }catch(error){
+      setError('GoogleLogin failed');
     }
   }
 
@@ -80,7 +100,7 @@ const Signup = () => {
           <div className="flex flex-col gap-4 items-center max-w-md mx-auto">
             <button 
               className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-3 px-4 w-full transition-colors duration-200"
-              onClick={() => {}}
+              onClick={handleGoogleSignup}
             >
               <div className="flex items-center w-full">
                 <FcGoogle className="w-5 h-5 mr-2 flex-shrink-0" />

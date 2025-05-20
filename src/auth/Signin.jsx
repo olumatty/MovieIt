@@ -5,6 +5,8 @@ import { FcGoogle } from "react-icons/fc";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { AuthContext } from "../../context/AuthContext";
+
 
 
 const Signin = () => {
@@ -13,6 +15,7 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const {login, googleLogin} = React.useContext(AuthContext);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,6 +25,15 @@ const Signin = () => {
     setLoading(true);
     setError('');
     setMessage('');
+    try{
+      await login(email, password);
+      setMessage('Login successful');
+      navigate("/movie");
+    }catch(error){
+      setError('Login failed');
+    }finally{
+      setLoading(false);
+    }
   };
 
   const handleLoginSwitch = () => {
@@ -35,6 +47,16 @@ const Signin = () => {
       navigate("/signup");
     }
   };
+
+  const handleGoogleLogin = () =>{
+    try{
+      googleLogin();
+      setMessage('Login successful');
+      navigate("/movie");
+    }catch(error){
+      setError('GoogleLogin failed');
+    }
+  }
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
@@ -76,7 +98,7 @@ const Signin = () => {
           <div className="flex flex-col gap-4 items-center max-w-md mx-auto">
             <button
               className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-3 px-4 w-full transition-colors duration-200"
-              onClick={() => {}}>
+              onClick={handleGoogleLogin}>
               <div className="flex items-center w-full">
                 <FcGoogle className="w-5 h-5 mr-2 flex-shrink-0" />
                 <span className="flex-1 text-center">Continue with Google</span>

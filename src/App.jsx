@@ -9,12 +9,13 @@ import React from "react";
 import { AuthProvider, AuthContext } from "../context/AuthContext";
 import { useEffect } from "react";
 import setupAxiosInterceptors from "../util/axiosSetup";
+import Loader from "../components/Loader";
 
 const ProtectedRoutes = ({children})=>  {
   const {User, loading} = React.useContext(AuthContext);
   if(loading) {
     return <div className="flex justify-center items-center h-screen">
-      <h1 className="text-3xl font-bold">Loading...</h1>
+      <h1><Loader/></h1>
     </div>
   }
   if(!User) {
