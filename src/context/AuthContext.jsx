@@ -5,12 +5,13 @@ import axios from 'axios';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+    // eslint-disable-next-line no-unused-vars
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
 
-axios.defaults.credentials = true;
+ axios.defaults.withCredentials = true;
 
 const API_URL = 'http://localhost:8000/api/v1/auth/';
 
@@ -25,6 +26,7 @@ useEffect(() => {
 }, []);
 
 const register = async (username, email, password) => {
+    console.log("Registering with:", { username, email, password })
     try {
         const response = await axios.post(`${API_URL}register`, {
             username,
@@ -34,7 +36,7 @@ const register = async (username, email, password) => {
         const { token, userId } = response.data;
 
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(username, email, userId));
+        localStorage.setItem('user', JSON.stringify({username, email, userId}));
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         setUser({username, email, userId});
@@ -45,16 +47,17 @@ const register = async (username, email, password) => {
     }
 };
 
-const login = async(username, password) => {
+const login = async(email, password) => {
+    console.log("Logging in with:", { email, password });
     try {
         const response = await axios.post(`${API_URL}login`, {
-            username,
+            email,
             password,
         });
-        const { token, userId, email } = response.data;
+        const { token, userId, username } = response.data;
 
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(email, userId, username));
+        localStorage.setItem('user', JSON.stringify({email, userId, username}));
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         setUser({username, email, userId});
@@ -66,6 +69,7 @@ const login = async(username, password) => {
 }
 
 const googleLogin = async (idToken) => {
+    console.log("Logging in with Google:", { idToken });
     try {
         const response = await axios.post(`${API_URL}google`, {idToken});
         const {token, userId, email, displayName} = response.data;
@@ -81,13 +85,13 @@ const googleLogin = async (idToken) => {
         throw error;
     }
 }
-
+    
 const logout = async() => {
     try{
         await axios.post(`${API_URL}logout`);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-
+       
         delete axios.defaults.headers.common['Authorization'];
         setUser(null);
     } catch (error) {
@@ -97,9 +101,8 @@ const logout = async() => {
 }
 
 const refreshToken = async() => {
-
     try {
-        const response = await axios.post(`${API_URL}refresh`);
+        const response = await axios.get(`${API_URL}refresh`);
         const { token } = response.data;
 
         localStorage.setItem('token', token);
@@ -111,8 +114,8 @@ const refreshToken = async() => {
 }
  return (
     <AuthContext.Provider value={{
-        user,
         loading,
+        user,
         error,
         register,
         login,

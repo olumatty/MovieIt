@@ -5,9 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { AuthContext } from "../../context/AuthContext";
-
-
+import { AuthContext } from "../context/AuthContext";
 
 const Signin = () => {
   const [password, setPassword] = useState("");
@@ -22,8 +20,28 @@ const Signin = () => {
 
   const handleLogin = async(e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+
+    if(!email){
+      setError('Email is required');
+      return;
+    }
+    if(!password){
+      setError('Password is required');
+      return;
+    }
+
+    if(!email.includes('@')){
+      setError('Email is invalid');
+      return;
+    }
+    if(password.length < 6){
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    setError('');
+    setLoading(true);
     setMessage('');
     try{
       await login(email, password);

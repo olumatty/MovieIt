@@ -6,9 +6,9 @@ import Movie from "./global/Movie";
 import PageNotFound from "./global/PageNotFound";
 import { Navigate } from "react-router-dom";
 import React from "react";
-import { AuthProvider, AuthContext } from "../context/AuthContext";
+import { AuthProvider, AuthContext } from "./context/AuthContext"
 import { useEffect } from "react";
-import setupAxiosInterceptors from "../util/axiosSetup";
+import setupAxiosInterceptors from "./util/axiosSetup";
 import Loader from "../components/Loader";
 
 const ProtectedRoutes = ({children})=>  {

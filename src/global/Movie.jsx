@@ -1,20 +1,18 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import AuthService from '../../services/AuthService';
-
-
+import { AuthContext } from '../context/AuthContext';
 
 const Movie = () => {
   const Navigate = useNavigate();
+  const {logout} = React.useContext(AuthContext);
 
   const handleLogout = () => {
     try{
-      AuthService.logout();
-      Navigate("/")
-    } catch(error) {
-      console.error('Error during logout:', error);
-      throw error;
+      logout();
+    }catch(error){
+      console.error('Logout failed', error);
     }
+    Navigate("/");
   }
   return (
     <div>

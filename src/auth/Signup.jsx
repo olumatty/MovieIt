@@ -4,9 +4,10 @@ import bgImage from "../assets/Movie Poster.avif";
 import { FcGoogle } from "react-icons/fc";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
 import { motion } from "framer-motion";
+import { validateEmail } from "../util/helper";
 
 const Signup = () => {
   const [password, setPassword] = useState("");
@@ -26,6 +27,28 @@ const Signup = () => {
     setLoading(true);
     setError('');
     setMessage('');
+
+    // Validate input fields
+    if(!username){
+      setError('Username is required');
+      return;
+    }
+
+    if(!email){
+      setError('Email is required');
+      return;
+    }
+    if(!password){
+      setError('Password is required');
+      return;
+    }
+
+    if(!validateEmail(email)){
+      setError('Invalid email format');
+      return;
+    }
+
+    setLoading(true);
     // Handle signup logic here
     try{
       await register(username, email, password);
