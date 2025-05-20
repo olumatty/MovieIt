@@ -2,10 +2,9 @@
 import React, { useState } from "react";
 import bgImage from "../assets/Movie Poster.avif";
 import { FcGoogle } from "react-icons/fc";
-import { RiGithubFill } from "react-icons/ri";
 import PasswordInput from "../../components/PasswordInput";
 import { useNavigate, useLocation } from "react-router-dom";
-import AuthService from '../../services/AuthService';
+
 import { motion } from "framer-motion";
 
 const Signup = () => {
@@ -25,24 +24,9 @@ const Signup = () => {
     setError('');
     setMessage('');
     // Handle signup logic here
-    try{
-      await AuthService.register(username, email, password);
-      navigate("/movie");
-    } catch(error){
-      console.error('Error during signup:', error);
-      throw error;  
-    } finally {
-      setLoading(false);
-    }
-  };
+  }
 
-  const handleGoogleSignup = () => {
-    AuthService.loginWithGoogle();
-  };
-
-  const handleGithubSignup = () => {
-    AuthService.loginWithGithub();
-  };
+  
 
   const handleLoginSwitch = () => {
     if (location.pathname !== "/login") {
@@ -54,7 +38,7 @@ const Signup = () => {
     if (location.pathname !== "/signup") {
       navigate("/signup");
     }
-  };
+  }
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
@@ -95,22 +79,12 @@ const Signup = () => {
           </div>
           <div className="flex flex-col gap-4 items-center max-w-md mx-auto">
             <button 
-              className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200"
-              onClick={handleGoogleSignup}
+              className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-3 px-4 w-full transition-colors duration-200"
+              onClick={() => {}}
             >
               <div className="flex items-center w-full">
                 <FcGoogle className="w-5 h-5 mr-2 flex-shrink-0" />
                 <span className="flex-1 text-center">Continue with Google</span>
-              </div>
-            </button>
-            
-            <button 
-              className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-2 px-4 w-full transition-colors duration-200"
-              onClick={handleGithubSignup}
-            >
-              <div className="flex items-center w-full">
-                <RiGithubFill className="w-5 h-5 mr-2 flex-shrink-0" />
-                <span className="flex-1 text-center">Continue with Github</span>
               </div>
             </button>
           </div>
