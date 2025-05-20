@@ -1,50 +1,55 @@
-import React, { useState, useEffect } from "react";
 import Signin from "./auth/Signin";
-import { FaSign } from "react-icons/fa";
 import Signup from "./auth/Signup";
 import { Routes, Route } from "react-router-dom";
 import Homepage from "./global/Homepage";
-import AuthService from "../services/AuthService";
 import Movie from "./global/Movie";
 import PageNotFound from "./global/PageNotFound";
-import AuthSuccess from "./global/AuthSuccess";
 import { Navigate } from "react-router-dom";
+import React from "react";
+import { AuthProvider, AuthContext } from "../context/AuthContext";
+import { useEffect } from "react";
+import setupAxiosInterceptors from "../util/axiosSetup";
 
 const ProtectedRoutes = ({children})=>  {
-  const isAuthenticated = AuthService.isAuthenticated();
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+  const {User, loading} = React.useContext(AuthContext);
+  if(loading) {
+    return <div className="flex justify-center items-center h-screen">
+      <h1 className="text-3xl font-bold">Loading...</h1>
+    </div>
+  }
+  if(!User) {
+    return <Navigate to="/login" />
   }
   return children;
 }
 
-const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser]= useState(null);
+const AppContent = () => {
+  const  {refreshToken, logout} = React.useContext(AuthContext);
 
   useEffect(() => {
-        const user = AuthService.getCurrentUser();
-        setUser(user);
-        setIsLoading(false);
-    }, []);
-
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
+    setupAxiosInterceptors(refreshToken, logout);
+  }, [refreshToken, logout]);
 
   return (
     <Routes>
       <Route path="/" element={<Homepage/>}/>
-      <Route path="/login" element={user ? <Navigate to ="/movie"/> : <Signin />} />
-      <Route path="/signup" element={user ? <Navigate to ="/movie"/> : <Signup />} />
+      <Route path="/login" element={ <Signin />} />
+      <Route path="/signup" element={ <Signup />} />
       <Route path= "/movie" element={<Movie/>} />
-      <Route path= "/auth-success" element={<AuthSuccess/>}/>
      
 
       <Route path = "*" element={<PageNotFound/>} />
       
     </Routes>
+
+  );
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 };
 
