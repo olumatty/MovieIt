@@ -47,7 +47,7 @@ const Signin = () => {
     try{
       await login(email, password);
       setMessage('Login successful');
-      navigate("/movie");
+      navigate("/home");
     }catch(error){
       setError('Login failed');
     }finally{
@@ -79,7 +79,7 @@ const Signin = () => {
       try{
         await googleLogin(idtoken);
         setMessage('Login successful');
-        navigate("/movie");
+        navigate("/home");
       } catch(error){
         setError('Google Login failed');
         console.error('Google Login failed:', error);

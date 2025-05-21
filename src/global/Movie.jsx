@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import Header from '../../components/Header';
 
 const Movie = () => {
   const Navigate = useNavigate();
@@ -16,6 +17,7 @@ const Movie = () => {
   }
   return (
     <div>
+      <Header/>
       <h1 className='text-3xl font-bold text-center mt-10'>Movie Page</h1>
       <p className='text-center text-gray-500 text-sm'>This is the movie page.</p>
 

@@ -10,6 +10,8 @@ import { AuthProvider, AuthContext } from "./context/AuthContext"
 import { useEffect } from "react";
 import setupAxiosInterceptors from "./util/axiosSetup";
 import Loader from "../components/Loader";
+import Home from "./global/Home";
+import TvSeries from "./global/TvSeries";
 
 const ProtectedRoutes = ({children})=>  {
   const {User, loading} = React.useContext(AuthContext);
@@ -37,6 +39,8 @@ const AppContent = () => {
       <Route path="/login" element={ <Signin />} />
       <Route path="/signup" element={ <Signup />} />
       <Route path= "/movie" element={<Movie/>} />
+      <Route path= "/home" element = {<Home/>} />
+      <Route path= "/tvseries" element= {<TvSeries/>} />
      
 
       <Route path = "*" element={<PageNotFound/>} />

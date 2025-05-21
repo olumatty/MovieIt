@@ -54,7 +54,7 @@ const Signup = () => {
     try{
       await register(username, email, password);
       setMessage('Registration successful');
-      navigate("/movie");
+      navigate("/home");
     } catch(error){
       setError('Registration failed');
     } finally{
@@ -86,7 +86,7 @@ const Signup = () => {
       try{
         await googleLogin(idtoken);
         setMessage('Login successful');
-        navigate("/movie");
+        navigate("/home");
       } catch(error){
         setError('Google Login failed');
         console.error('Google Login failed:', error);
