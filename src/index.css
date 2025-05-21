@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+body,html{
+    scroll-behavior: smooth;
+}
+
+.no-scroll {
+    position: fixed;
+    inline-size: 100%;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+    background-color: #fff;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 25px;
+    background-color: #aaa;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #464646;
+  }
+  
+  ::-webkit-scrollbar-corner {
+    border-radius: 25px;
+  }

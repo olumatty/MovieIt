@@ -8,6 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import { motion } from "framer-motion";
 import { validateEmail } from "../util/helper";
+import {GoogleLogin} from "@react-oauth/google";
 
 const Signup = () => {
   const [password, setPassword] = useState("");
@@ -73,15 +74,36 @@ const Signup = () => {
     }
   }
 
-  const handleGoogleSignup = () => {
-    try{
-      googleLogin();
-      setMessage('Login successful');
-      navigate("/movie");
-    }catch(error){
-      setError('GoogleLogin failed');
+  const handleGoogleSuccess =  async (credentialResponse) => {
+    console.log("Google Credential Response:", credentialResponse);
+    const idtoken = credentialResponse.credential;
+    console.log("ID Token obtained from sdk:", idtoken);
+
+    if(idtoken){
+      setLoading(true);
+      setError('');
+      setMessage('');
+      try{
+        await googleLogin(idtoken);
+        setMessage('Login successful');
+        navigate("/movie");
+      } catch(error){
+        setError('Google Login failed');
+        console.error('Google Login failed:', error);
+      } finally{
+        setLoading(false);
+      }
+    } else {
+      setError('Google ID token not found in response');
+      console.error('Google ID token not found in response:', credentialResponse);
     }
   }
+
+  const handleGoogleError = () => {
+    setError('Google Login failed');
+    console.error('Google Login failed:', error);
+  }
+
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
@@ -120,17 +142,24 @@ const Signup = () => {
               Create Account
             </button>
           </div>
-          <div className="flex flex-col gap-4 items-center max-w-md mx-auto">
-            <button 
-              className="input-box border-gray-300 hover:bg-gray-50 flex items-center justify-between cursor-pointer font-medium border rounded-md py-3 px-4 w-full transition-colors duration-200"
-              onClick={handleGoogleSignup}
-            >
-              <div className="flex items-center w-full">
-                <FcGoogle className="w-5 h-5 mr-2 flex-shrink-0" />
-                <span className="flex-1 text-center">Continue with Google</span>
-              </div>
-            </button>
-          </div>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onFailure={handleGoogleError}
+            render= {({onClick, disabled}) => (
+            <div className="flex flex-col gap-4 items-center max-w-md mx-auto">
+                <button
+                  onClick = {onClick}
+                  disabled = {disabled}
+                  className="input-box border-gray-300 hover:bg-gray-50 flex-1 items-center justify-between cursor-pointer font-medium border rounded-md py-3 px-4 w-full transition-colors duration-200"
+                >
+            <div className="flex items-center w-full">
+                  <FcGoogle className="w-5 h-5 mr-2 flex-shrink-0" />
+                  <span className="flex-1 text-center">Continue with Google</span>
+            </div>
+                </button>
+             </div>
+            )}
+            />
 
           <div className="my-8 flex items-center gap-2">
             <hr className="flex-grow border-gray-300" />
