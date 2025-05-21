@@ -12,6 +12,7 @@ import setupAxiosInterceptors from "./util/axiosSetup";
 import Loader from "../components/Loader";
 import Home from "./global/Home";
 import TvSeries from "./global/TvSeries";
+import Layout from "./../components/Layout";
 
 const ProtectedRoutes = ({children})=>  {
   const {User, loading} = React.useContext(AuthContext);
@@ -34,6 +35,7 @@ const AppContent = () => {
   }, [refreshToken, logout]);
 
   return (
+    <Layout>
     <Routes>
       <Route path="/" element={<Homepage/>}/>
       <Route path="/login" element={ <Signin />} />
@@ -44,8 +46,10 @@ const AppContent = () => {
      
 
       <Route path = "*" element={<PageNotFound/>} />
-      
+
     </Routes>
+    </Layout>
+
 
   );
 };
